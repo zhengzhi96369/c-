@@ -1,4 +1,2 @@
-This is a new project
-Haha
-Hehe
-This is a test sentence
+This is from a good c++ learning conductor
+                                   --created by Master Z
