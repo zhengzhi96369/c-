@@ -6,12 +6,12 @@
 #include <iostream>
 #include "mylog.h"
 int main(){
-	int i = 100;
+	int i = 10;
 	while(--i){
-		warn("lala");
-		info("haha");
-		error("gaga");
-		debug("wawa");
+		Warn("lala");
+		Info("haha");
+		Error("gaga");
+		Debug("wawa");
 	}
-	return 1;
+	return 0;
 }

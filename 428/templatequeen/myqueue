@@ -1,0 +1,91 @@
+ ///
+ /// @file    queue.cc
+ /// @author  zhengzhi(2251645084@qq.com)
+ /// @date    2016-04-28 10:54:56
+ ///
+ //包含模板的类和实现要写在一起
+#ifndef __MY_QUEUE__
+#define __MY_QUEUE__
+#include <iostream>
+using std::cout;
+using std::endl;
+template<typename T,int NUM>
+class Queue{
+	public:
+		Queue();
+		~Queue();
+		bool empty();
+		bool full();
+		bool push(const T &);
+		bool pop(T &);
+		bool front(T &);
+		bool back(T &);
+	private:
+		int _back;
+		int _front;
+		T * _data;
+};
+template<typename T,int NUM>
+Queue<T,NUM>::Queue()
+:_back(0)
+,_front(0)
+{
+	_data = new T[NUM + 1];
+}
+template<typename T,int NUM>
+Queue<T,NUM>::~Queue()
+{
+	delete [] _data;
+}
+template<typename T,int NUM>
+bool Queue<T,NUM>::empty()
+{
+	return _back == _front;
+}
+template<typename T,int NUM>
+bool Queue<T,NUM>::full()
+{
+	return (_back + 1) % (NUM + 1) == _front;
+}
+template<typename T,int NUM>
+bool Queue<T,NUM>::push(const T & obj)
+{
+	if(!full()){
+		_data[_back] = obj;
+		_back = (_back + 1) % (NUM + 1);
+		cout<<"front: "<<_front<<endl;
+		cout<<"back: "<<_back<<endl;
+		return true;
+	}
+	return false;
+}
+template<typename T,int NUM>
+bool Queue<T,NUM>::pop(T & temp)
+{
+	if(!empty()){
+		temp = _data[_front];
+		_front = (_front + 1) % (NUM + 1);
+		return true;
+	}
+	return false;
+}
+template<typename T,int NUM>
+bool Queue<T,NUM>::front(T & temp)
+{
+	if(!empty()){
+		cout<<"front: "<<_front<<endl;
+		temp = _data[_front];
+		return true;
+	}
+	return false;
+}
+template<typename T,int NUM>
+bool Queue<T,NUM>::back(T & temp){
+	if(!empty()){
+		cout<<"back: "<<_back<<endl;
+		temp = _data[(_back - 1) % (NUM + 1)];
+		return true;
+	}
+	return false;
+}
+#endif

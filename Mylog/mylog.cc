@@ -4,6 +4,8 @@
  /// @date    2016-04-22 23:41:20
  ///
 #include "mylog.h"
+using std::cout;
+Mylog::Release Mylog::release;
 Mylog * Mylog::log = NULL;
 Mylog::Mylog()
 {
@@ -23,47 +25,54 @@ Mylog::Mylog()
 	//add them to our category
 	Mylog::_category->addAppender(rfappender);
 	Mylog::_category->addAppender(oappender);
-	Mylog::_category->setPriority(1000);
+	Mylog::_category->setPriority(log4cpp::Priority::DEBUG);
 }
 Mylog * Mylog::openLog(){
-	if(NULL == Mylog::log){
+	if(NULL == log){
 		log = new Mylog;
-		cout<<"Mylog is running"<<endl;
 	}
-	return log;
+	return Mylog::log;
 }
 Mylog::~Mylog(){
-	_category->Category::shutdown();
+	log4cpp::Category::shutdown();
 }
-void Mylog::closeLog(){//使用日志系统的都必须在结束处显示关闭
-	delete log;
+void Mylog::closeLog(){//使用日志后请手动关闭
+	if(NULL != log){
+		delete log;
+	}
 }
-void Mylog::warn(const char *msg){
+void Mylog::warn_log(const char *msg){
 	_category->warn(msg);
 }
-void Mylog::error(const char *msg){
+void Mylog::error_log(const char *msg){
 	_category->error(msg);
 }
-void Mylog::debug(const char *msg){
+void Mylog::debug_log(const char *msg){
 	_category->debug(msg);
 }
-void Mylog::info(const char *msg){
+void Mylog::info_log(const char *msg){
 	_category->info(msg);
 }
-void warn(const char *msg){
+void warnLog(const char *msg){
 	Mylog * log = Mylog::openLog();
-	log->warn(msg);
-
+	log->warn_log(msg);
 }
-void error(const char *msg){
+void errorLog(const char *msg){
 	Mylog * log = Mylog::openLog();
-	log->error(msg);
+	log->error_log(msg);
 }
-void debug(const char *msg){
+void debugLog(const char *msg){
 	Mylog * log = Mylog::openLog();
-	log->debug(msg);
+	log->debug_log(msg);
 }
-void info(const char *msg){
+void infoLog(const char *msg){
 	Mylog * log = Mylog::openLog();
-	log->info(msg);
+	log->info_log(msg);
+}
+Mylog::Release::~Release(){
+	if(NULL != log){
+//		delete log;//不能实现自动关闭的升级，请大神补充
+	}
+}
+Mylog::Release::Release(){
 }
